@@ -14,11 +14,11 @@ export interface IDataType {
 }
 
 export interface ICardList {
-  page: string;
-  cat: string;
+  page: number;
+  cat?: string;
 }
 
-const getData = async (page: string, cat: string) => {
+const getData = async (page: number, cat?: string) => {
   const res = await fetch(
     `http://localhost:3000/api/posts?page=${page}&cat=${cat || ""}`,
     {
