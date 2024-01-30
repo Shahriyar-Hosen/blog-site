@@ -34,10 +34,13 @@ const getData = async () => {
   });
 
   if (!res.ok) {
-    throw new Error("Failed");
+    // throw new Error("Failed");
+    console.error("Failed to fetch categories");
   }
 
-  return res.json();
+  // Todo
+  // return res.json();
+  return [];
 };
 
 const CategoryList: FC = async () => {

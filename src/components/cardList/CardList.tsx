@@ -26,11 +26,14 @@ const getData = async (page: number, cat?: string) => {
     }
   );
 
+  // Todo
   if (!res.ok) {
-    throw new Error("Failed");
+    // throw new Error("Failed");
+    console.error("Failed to fetch posts");
   }
 
-  return res.json();
+  // return res.json();
+  return { posts: [], count: 0 };
 };
 
 const CardList: FC<ICardList> = async ({ page, cat }) => {
