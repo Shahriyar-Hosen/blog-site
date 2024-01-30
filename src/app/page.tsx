@@ -1,11 +1,8 @@
 import { NextPage } from "next";
+import styles from "./page.module.css";
 
 const Home: NextPage = () => {
-  return (
-    <div>
-      <h1>hello</h1>
-    </div>
-  );
+  return <div className={styles.container}>{/* <Featured /> */}</div>;
 };
 
 export default Home;

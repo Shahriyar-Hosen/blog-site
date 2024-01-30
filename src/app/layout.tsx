@@ -1,3 +1,5 @@
+import Footer from "@/components/footer/Footer";
+import Navbar from "@/components/navbar/Navbar";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { PropsWithChildren } from "react";
@@ -15,7 +17,11 @@ const RootLayout = ({ children }: Readonly<PropsWithChildren>) => {
     <html lang="en">
       <body className={inter.className}>
         <main className="container">
-          <div className="wrapper">{children}</div>
+          <div className="wrapper">
+            <Navbar />
+            {children}
+            <Footer />
+          </div>
         </main>
       </body>
     </html>
