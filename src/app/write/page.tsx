@@ -1,9 +1,11 @@
 "use client";
 
+import { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
+import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
 import styles from "./writePage.module.css";
 // import {
@@ -13,8 +15,6 @@ import styles from "./writePage.module.css";
 //   getDownloadURL,
 // } from "firebase/storage";
 // import { app } from "@/utils/firebase";
-import { NextPage } from "next";
-// import ReactQuill from "react-quill";
 
 const WritePage: NextPage = () => {
   const { status } = useSession();
@@ -60,13 +60,13 @@ const WritePage: NextPage = () => {
     file && upload();
   }, [file]);
 
-  if (status === "loading") {
-    return <div className={styles.loading}>Loading...</div>;
-  }
+  // if (status === "loading") {
+  //   return <div className={styles.loading}>Loading...</div>;
+  // }
 
-  if (status === "unauthenticated") {
-    router.push("/");
-  }
+  // if (status === "unauthenticated") {
+  //   router.push("/");
+  // }
 
   const slugify = (str: string) =>
     str
@@ -143,13 +143,13 @@ const WritePage: NextPage = () => {
             </button>
           </div>
         )}
-        {/* <ReactQuill
+        <ReactQuill
           className={styles.textArea}
           theme="bubble"
           value={value}
           onChange={setValue}
           placeholder="Tell your story..."
-        /> */}
+        />
       </div>
       <button className={styles.publish} onClick={handleSubmit}>
         Publish
