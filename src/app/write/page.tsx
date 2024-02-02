@@ -60,13 +60,13 @@ const WritePage: NextPage = () => {
     file && upload();
   }, [file]);
 
-  // if (status === "loading") {
-  //   return <div className={styles.loading}>Loading...</div>;
-  // }
+  if (status === "loading") {
+    return <div className={styles.loading}>Loading...</div>;
+  }
 
-  // if (status === "unauthenticated") {
-  //   router.push("/");
-  // }
+  if (status === "unauthenticated") {
+    router.push("/");
+  }
 
   const slugify = (str: string) =>
     str
