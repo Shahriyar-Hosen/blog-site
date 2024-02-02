@@ -1,11 +1,16 @@
-// import { PrismaAdapter } from "@auth/prisma-adapter";
+import { prisma } from "@/utils";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import { NextAuthOptions, getServerSession } from "next-auth";
+import { Adapter, AdapterUser } from "next-auth/adapters";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-// import prisma from "./connect";
-import { NextAuthOptions, getServerSession } from "next-auth";
+
+export interface CustomAdapter extends Adapter {
+  createUser(user: Omit<AdapterUser, "id">): Promise<AdapterUser>;
+}
 
 export const authOptions: NextAuthOptions = {
-  // adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma) as CustomAdapter,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID as string,
