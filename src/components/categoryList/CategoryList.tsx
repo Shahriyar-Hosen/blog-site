@@ -1,34 +1,10 @@
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import { ICategory } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  FC,
-  JSXElementConstructor,
-  Key,
-  PromiseLikeOfReactNode,
-  ReactElement,
-  ReactNode,
-  ReactPortal,
-} from "react";
+import { FC } from "react";
 import styles from "./categoryList.module.css";
 
-export interface IDataType {
-  slug: string | number;
-  _id: Key | null | undefined;
-  img: string | StaticImport;
-  title:
-    | string
-    | number
-    | boolean
-    | ReactElement<any, string | JSXElementConstructor<any>>
-    | Iterable<ReactNode>
-    | ReactPortal
-    | PromiseLikeOfReactNode
-    | null
-    | undefined;
-}
-
-const getData = async () => {
+const getData = async (): Promise<ICategory[]> => {
   const res = await fetch("http://localhost:3000/api/categories", {
     cache: "no-store",
   });
@@ -38,33 +14,32 @@ const getData = async () => {
     console.error("Failed to fetch categories");
   }
 
-  // Todo
-  // return res.json();
-  return [];
+  return res.json() || [];
 };
 
 const CategoryList: FC = async () => {
   const data = await getData();
+
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Popular Categories</h1>
       <div className={styles.categories}>
-        {data?.map((item: IDataType) => (
+        {data?.map(({ _id, slug, title, img }: ICategory) => (
           <Link
-            href="/blog?cat=style"
-            className={`${styles.category} ${styles[item.slug]}`}
-            key={item._id}
+            key={_id}
+            href={`/blog?cat=${slug}`}
+            className={`${styles.category} ${styles[slug]}`}
           >
-            {item.img && (
+            {img && (
               <Image
-                src={item.img}
+                src={img}
                 alt=""
                 width={32}
                 height={32}
                 className={styles.image}
               />
             )}
-            {item.title}
+            {title}
           </Link>
         ))}
       </div>
