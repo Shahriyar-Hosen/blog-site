@@ -1,5 +1,12 @@
 "use client";
 
+import { app } from "@/utils";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
 import { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -8,13 +15,6 @@ import { ChangeEvent, useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
 import styles from "./writePage.module.css";
-// import {
-//   getStorage,
-//   ref,
-//   uploadBytesResumable,
-//   getDownloadURL,
-// } from "firebase/storage";
-// import { app } from "@/utils/firebase";
 
 const WritePage: NextPage = () => {
   const { status } = useSession();
@@ -28,33 +28,68 @@ const WritePage: NextPage = () => {
   const [catSlug, setCatSlug] = useState("");
 
   useEffect(() => {
-    // const storage = getStorage(app);
+    const storage = getStorage(app);
     const upload = () => {
-      // const name = new Date().getTime() + file.name;
-      // const storageRef = ref(storage, name);
-      // const uploadTask = uploadBytesResumable(storageRef, file);
-      // uploadTask.on(
-      //   "state_changed",
-      //   (snapshot) => {
-      //     const progress =
-      //       (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      //     console.log("Upload is " + progress + "% done");
-      //     switch (snapshot.state) {
-      //       case "paused":
-      //         console.log("Upload is paused");
-      //         break;
-      //       case "running":
-      //         console.log("Upload is running");
-      //         break;
-      //     }
-      //   },
-      //   (error) => {},
-      //   () => {
-      //     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-      //       setMedia(downloadURL);
-      //     });
-      //   }
-      // );
+      if (file !== null) {
+        const name = new Date().getTime() + file.name;
+        const storageRef = ref(storage, "images/" + name);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+
+        // Listen for state changes, errors, and completion of the upload.
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            const progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log("Upload is " + progress + "% done");
+            switch (snapshot.state) {
+              case "paused":
+                console.log("Upload is paused");
+                break;
+              case "running":
+                console.log("Upload is running");
+                break;
+            }
+          },
+          (error) => {
+            // A full list of error codes is available at
+            // https://firebase.google.com/docs/storage/web/handle-errors
+            switch (error.code) {
+              case "storage/unauthorized":
+                // User doesn't have permission to access the object
+                console.log({
+                  message: "User doesn't have permission to access the object",
+                  type: "storage/unauthorized",
+                });
+                break;
+              case "storage/canceled":
+                // User canceled the upload
+                console.log({
+                  message: "User canceled the upload",
+                  type: "storage/canceled",
+                });
+                break;
+
+              case "storage/unknown":
+                // Unknown error occurred, inspect error.serverResponse
+                console.log({
+                  message:
+                    "Unknown error occurred, inspect error.serverResponse",
+                  type: "storage/unknown",
+                });
+                break;
+            }
+          },
+          () => {
+            // Upload completed successfully, now we can get the download URL
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+              // console.log("File available at", downloadURL);
+              setMedia(downloadURL);
+            });
+          }
+        );
+      }
     };
 
     file && upload();
@@ -68,6 +103,7 @@ const WritePage: NextPage = () => {
     router.push("/");
   }
 
+  // Salman Ahamad => salman-ahamad
   const slugify = (str: string) =>
     str
       .toLowerCase()
