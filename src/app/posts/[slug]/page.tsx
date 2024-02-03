@@ -6,9 +6,12 @@ import Image from "next/image";
 import styles from "./singlePage.module.css";
 
 const getData = async (slug: string): Promise<IPost> => {
-  const res = await fetch(`http://localhost:3000/api/posts/${slug}`, {
-    cache: "no-store",
-  });
+  const res = await fetch(
+    `https://blog-site-psi.vercel.app/api/posts/${slug}`,
+    {
+      cache: "no-store",
+    }
+  );
 
   if (!res.ok) {
     throw new Error("Failed");

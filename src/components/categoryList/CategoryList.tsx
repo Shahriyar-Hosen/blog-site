@@ -5,7 +5,7 @@ import { FC } from "react";
 import styles from "./categoryList.module.css";
 
 const getData = async (): Promise<ICategory[]> => {
-  const res = await fetch("http://localhost:3000/api/categories", {
+  const res = await fetch("https://blog-site-psi.vercel.app/api/categories", {
     cache: "no-store",
   });
 

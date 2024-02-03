@@ -11,7 +11,7 @@ export interface IGetPosts {
 
 const getData = async (page: number, cat?: string): Promise<IGetPosts> => {
   const res = await fetch(
-    `http://localhost:3000/api/posts?page=${page}&cat=${cat || ""}`,
+    `https://blog-site-psi.vercel.app/api/posts?page=${page}&cat=${cat || ""}`,
     {
       cache: "no-store",
     }
