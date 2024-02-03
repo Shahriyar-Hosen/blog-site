@@ -12,9 +12,10 @@ const getData = async (): Promise<ICategory[]> => {
   if (!res.ok) {
     // throw new Error("Failed");
     console.error("Failed to fetch categories");
+    return [];
   }
 
-  return res.json() || [];
+  return res.json();
 };
 
 const CategoryList: FC = async () => {
@@ -24,7 +25,7 @@ const CategoryList: FC = async () => {
     <div className={styles.container}>
       <h1 className={styles.title}>Popular Categories</h1>
       <div className={styles.categories}>
-        {data?.map(({ _id, slug, title, img }: ICategory) => (
+        {data?.map(({ _id, slug, title, img }) => (
           <Link
             key={_id}
             href={`/blog?cat=${slug}`}

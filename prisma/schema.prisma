@@ -53,8 +53,8 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  Post          Post[]
-  Comment       Comment[]
+  post          Post[]
+  comment       Comment[]
 }
 
 model Category {
@@ -62,11 +62,12 @@ model Category {
   slug  String  @unique
   title String
   img   String?
-  Posts Post[]
+  posts Post[]
 }
 
 model Post {
   id        String    @id @default(cuid()) @map("_id")
+  createdAt DateTime  @default(now())
   slug      String    @unique
   title     String
   desc      String
@@ -76,7 +77,7 @@ model Post {
   cat       Category  @relation(fields: [catSlug], references: [slug])
   userEmail String
   user      User      @relation(fields: [userEmail], references: [email])
-  Comments  Comment[]
+  comments  Comment[]
 }
 
 model Comment {
@@ -85,6 +86,6 @@ model Comment {
   desc      String
   userEmail String
   user      User     @relation(fields: [userEmail], references: [email])
-  postlug   String
-  post      Post     @relation(fields: [postlug], references: [slug])
+  postSlug  String
+  post      Post     @relation(fields: [postSlug], references: [slug])
 }

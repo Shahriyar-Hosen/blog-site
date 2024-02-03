@@ -1,10 +1,11 @@
 import Menu from "@/components/Menu/Menu";
 import Comments from "@/components/comments/Comments";
+import { IPost } from "@/types";
 import { NextPage } from "next";
 import Image from "next/image";
 import styles from "./singlePage.module.css";
 
-const getData = async (slug: string) => {
+const getData = async (slug: string): Promise<IPost> => {
   const res = await fetch(`http://localhost:3000/api/posts/${slug}`, {
     cache: "no-store",
   });
