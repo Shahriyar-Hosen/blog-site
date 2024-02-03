@@ -9,14 +9,16 @@ import {
 } from "firebase/storage";
 import { NextPage } from "next";
 import { useSession } from "next-auth/react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
 import styles from "./writePage.module.css";
+// import ReactQuill from "react-quill";
 
 const WritePage: NextPage = () => {
+  const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
   const { status } = useSession();
   const router = useRouter();
 
