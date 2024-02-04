@@ -1,6 +1,6 @@
 "use client";
 
-import { app } from "@/utils";
+import { app } from "@/utils/firebase";
 import {
   getDownloadURL,
   getStorage,
